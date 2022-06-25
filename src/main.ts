@@ -86,6 +86,7 @@ const walls = new Mesh(
 )
 walls.geometry.setAttribute('uv2', new Float32BufferAttribute(walls.geometry.attributes.uv.array, 2))
 walls.position.y = 1.25
+walls.castShadow = true
 
 const roof = new Mesh(
   new ConeBufferGeometry(3.5, 1, 4),
@@ -147,6 +148,7 @@ bushesProps.forEach(({ scale, position }) => {
   )
   bush.scale.set(...scale)
   bush.position.set(...position)
+  bush.castShadow = true
   house.add(bush)
 })
 
@@ -169,6 +171,7 @@ const generateSingleGrave = () => {
 
   grave.rotation.z = (Math.random() - 0.5) * 0.4
   grave.rotation.y = (Math.random() - 0.5) * 0.4
+  grave.castShadow = true
 
   graves.add(grave)
 }
@@ -190,6 +193,7 @@ const floor = new THREE.Mesh(
 floor.geometry.setAttribute('uv2', new Float32BufferAttribute(floor.geometry.attributes.uv.array, 2))
 floor.rotation.x = - Math.PI * 0.5
 floor.position.y = 0
+floor.receiveShadow = true
 scene.add(floor)
 
 /**
@@ -203,6 +207,7 @@ scene.add(ambientLight)
 // Directional light
 const moonLight = new THREE.DirectionalLight('#b9d5ff', 0.12)
 moonLight.position.set(4, 5, - 2)
+moonLight.castShadow = true
 gui.add(moonLight, 'intensity').min(0).max(1).step(0.001)
 gui.add(moonLight.position, 'x').min(- 5).max(5).step(0.001)
 gui.add(moonLight.position, 'y').min(- 5).max(5).step(0.001)
@@ -212,6 +217,7 @@ scene.add(moonLight)
 //Door Light
 const doorLight = new PointLight('#ff7d46', 1, 7)
 doorLight.position.set(0, 2.2, 2.7)
+doorLight.castShadow = true
 house.add(doorLight)
 
 /**
@@ -219,6 +225,7 @@ house.add(doorLight)
 */
 const ghosts = ['#ff00ff', '#00ffff', '#00ffff'].map(color => {
   const ghost = new PointLight(color, 2, 3)
+  ghost.castShadow = true
   scene.add(ghost)
   return ghost
 })
@@ -276,6 +283,7 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setSize(sizes.width, sizes.height)
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
 renderer.setClearColor('#262837')
+renderer.shadowMap.enabled = true
 /**
  * Animate
  */
